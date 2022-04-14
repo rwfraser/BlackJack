@@ -8,12 +8,22 @@ Chapter 2. Example 2.
 """
 
 from typing import Tuple, Any, Union, cast
+from enum import Enum
 
 # Definition of a simple class hierarchy.
 # Note the overlap with a dataclass if we use properties.
 
 
 class Card:
+    """
+    Card object with rank, suit, and _points attributes
+
+    Returns:
+        Card object
+
+    Methods for constructor, rank comparison, string representation,
+    rank, suit, and relative value of card
+    """
     insure = False
 
     def __init__(self, rank: str, suit: Any) -> None:
@@ -30,9 +40,19 @@ class Card:
         )
 
     def __repr__(self) -> str:
+        """Returns the rank and suit of a given card
+
+        Returns:
+            str: rank and suit of card
+        """
         return f"{self.__class__.__name__}(suit={self.suit!r}, rank={self.rank!r})"
 
     def __str__(self) -> str:
+        """Returns rank and suit of current card
+
+        Returns:
+            str: rank and suit of card
+        """
         return f"{self.rank}{self.suit}"
 
     def _points(self) -> Tuple[int, int]:
@@ -40,13 +60,32 @@ class Card:
 
 
 class AceCard(Card):
+    """Ace is a unique card
+
+    Args:
+        Card (Card): CARD object of rank 1, any suit
+
+    Returns:
+        Bool : used for testing purposes
+    """
     insure = True
 
     def _points(self) -> Tuple[int, int]:
+        """returns a tuple representing the point value of a given CARD
+
+        Returns:
+            Tuple[int, int]: Use a tuple of 2 ints because Aces may count 1 or 11
+            All other cards have a single point value.
+        """
         return 1, 11
 
 
 class FaceCard(Card):
+    """Represents K,Q,J rank of CARD
+
+    Args:
+        Card (Card): Used to set point values for facecards
+    """
 
     def _points(self) -> Tuple[int, int]:
         return 10, 10
@@ -67,8 +106,6 @@ test_card = """
 """
 
 # Instead of strings, we can use an enum
-
-from enum import Enum
 
 
 class Suit(str, Enum):
@@ -98,11 +135,11 @@ test_suit_value = """
       File "/Users/slott/miniconda3/envs/py37/lib/python3.7/types.py", line 175, in __set__
         raise AttributeError("can't set attribute")
     AttributeError: can't set attribute
-    
+
 """
 
 __test__ = {name: value for name, value in locals().items() if name.startswith("test_")}
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod(verbose=False)
+    doctest.testmod(verbose=True)
